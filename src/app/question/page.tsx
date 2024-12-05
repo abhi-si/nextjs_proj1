@@ -27,15 +27,13 @@ const QuestionPage = () => {
   const [isRecording, setIsRecording] = useState(false); // To manage recording state
 
   useEffect(() => {
-    // Start the timer
     if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && currentQuestionIndex < questions.length - 1) {
       handleSaveAndNext(); // Auto move to next question when time is up
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft]);
+  }, [timeLeft, currentQuestionIndex]); // Re-run on timeLeft and currentQuestionIndex change
 
   useEffect(() => {
     // Start live video feed
@@ -56,11 +54,19 @@ const QuestionPage = () => {
 
     return () => {
       // Stop video feed on component unmount
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       const stream = videoRef.current?.srcObject as MediaStream;
       stream?.getTracks().forEach((track) => track.stop());
     };
   }, []);
+
+  useEffect(() => {
+    // Read the current question using SpeechSynthesis API
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(
+      questions[currentQuestionIndex]
+    );
+    synth.speak(utterance);
+  }, [currentQuestionIndex]); // Trigger whenever the question changes
 
   const startRecording = () => {
     const stream = videoRef.current?.srcObject as MediaStream;
@@ -90,7 +96,7 @@ const QuestionPage = () => {
   const handleSaveAndNext = () => {
     stopRecording(); // Stop the recording for the current question
     setCurrentQuestionIndex((prev) => prev + 1); // Move to next question
-    setTimeLeft(60); // Reset timer
+    setTimeLeft(60); // Reset timer for the next question
     if (currentQuestionIndex >= questions.length - 1) {
       router.push("/"); // Navigate to the home page after the last question
     }
