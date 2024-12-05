@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { auth, signInWithPopup, provider } from "../../../firebaseConfig"; // Use the provider imported from firebaseConfig
 

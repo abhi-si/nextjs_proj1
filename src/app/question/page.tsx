@@ -34,6 +34,7 @@ const QuestionPage = () => {
     } else if (timeLeft === 0 && currentQuestionIndex < questions.length - 1) {
       handleSaveAndNext(); // Auto move to next question when time is up
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const QuestionPage = () => {
 
     return () => {
       // Stop video feed on component unmount
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       const stream = videoRef.current?.srcObject as MediaStream;
       stream?.getTracks().forEach((track) => track.stop());
     };
