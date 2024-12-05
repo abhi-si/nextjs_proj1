@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "./components/navbar";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import {
   auth,
