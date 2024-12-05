@@ -29,7 +29,7 @@ const InterviewPage = () => {
       }
       setCheckStatus((prevState) => ({ ...prevState, camera: true }));
       setStep(2); // Move to the next step (audio check)
-    } catch (err: any) {
+    } catch {
       setErrorMessage("Camera access was denied or not available.");
     }
   };
@@ -37,10 +37,10 @@ const InterviewPage = () => {
   // Audio check
   const handleAudioCheck = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      await navigator.mediaDevices.getUserMedia({ audio: true }); // No need for the stream variable
       setCheckStatus((prevState) => ({ ...prevState, audio: true }));
       setStep(3); // Move to the next step (speaker check)
-    } catch (err: any) {
+    } catch {
       setErrorMessage("Audio access was denied or not available.");
     }
   };
@@ -75,14 +75,12 @@ const InterviewPage = () => {
         setCheckStatus((prevState) => ({ ...prevState, screenShare: true }));
         setStep(5); // All checks passed, proceed
       }
-    } catch (err) {
+    } catch  {
       setErrorMessage("Screen sharing was denied. Please enable it.");
     }
   };
 
-  const handleBack = () => {
-    router.push("/"); // Go back to the home page
-  };
+  
 
   const handleStartInterview = () => {
     router.push("/instructions");
